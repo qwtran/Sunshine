@@ -11,9 +11,9 @@ import android.widget.TextView;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DetailActivityFragment extends Fragment {
+public class DetailFragment extends Fragment {
 
-    public DetailActivityFragment() {
+    public DetailFragment() {
     }
 
     @Override
@@ -21,12 +21,6 @@ public class DetailActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View fragmentView = inflater.inflate(R.layout.fragment_detail, container, false);
-
-        Intent intent = getActivity().getIntent();
-        String message = intent.getStringExtra(Intent.EXTRA_TEXT);
-
-        TextView textView = (TextView) fragmentView.findViewById(R.id.detail_text);
-        textView.append(message);
 
         return fragmentView;
     }
