@@ -16,12 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 import android.widget.ListView;
 import android.text.format.Time;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.IOException;
@@ -29,15 +26,13 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.HttpURLConnection;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
 
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class ForecastFragment extends Fragment {
 
     private ArrayAdapter<String> mForecastAdapter;
@@ -62,11 +57,7 @@ public class ForecastFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.action_refresh) {
-            FetchWeatherClass weatherClass = new FetchWeatherClass();
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String location = prefs.getString(getString(R.string.pref_location_key),
-                    getString(R.string.pref_location_default));
-            weatherClass.execute(location);
+            updateWeather();
             return true;
         }
 
@@ -80,21 +71,11 @@ public class ForecastFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        List<String> weekForecast = new ArrayList<String>();
-        weekForecast.add("Today - Sunny - 88/63");
-        weekForecast.add("Tomorrow - Sunny - 87/63");
-        weekForecast.add("Wed - Sunny - 86/63");
-        weekForecast.add("Thurs - Sunny - 83/63");
-        weekForecast.add("Fri - Sunny - 80/63");
-        weekForecast.add("Sat - Sunny - 98/63");
-        weekForecast.add("Sun - Sunny - 40/63");
-
         mForecastAdapter = new ArrayAdapter<String>(
                 getActivity(),
                 R.layout.list_item_forecast,
                 R.id.list_item_forecast_textview,
-                weekForecast
-        );
+                new ArrayList<String>());
 
         ListView listView = (ListView) rootView.findViewById(R.id.listView_forecast);
         listView.setAdapter(mForecastAdapter);
@@ -111,9 +92,23 @@ public class ForecastFragment extends Fragment {
         return rootView;
     }
 
-    private class FetchWeatherClass extends AsyncTask<String,Void,String[]> {
+    private void updateWeather() {
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = prefs.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+        weatherTask.execute(location);
+    }
 
-        private final String LOG_TAG = FetchWeatherClass.class.getSimpleName();
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateWeather();
+    }
+
+    private class FetchWeatherTask extends AsyncTask<String,Void,String[]> {
+
+        private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
         @Override
         protected String[] doInBackground(String... params) {
