@@ -5,6 +5,8 @@
     <string name="title_activity_detail">Details</string>
     <string name="title_activity_settings">Settings</string>
 
+
+
     <!-- Label for the location preference [CHAR LIMIT=30] -->
     <string name="pref_location_label">Location</string>
 
@@ -13,6 +15,7 @@
 
     <!-- Default postal code for location preference [CHAR LIMIT=NONE] -->
     <string name="pref_location_default" translatable="false">92122</string>
+
 
 
     <!-- Label for the temperature units preference [CHAR LIMIT=30] -->
@@ -32,5 +35,10 @@
 
     <!-- Value in SharedPreferences for imperial temperature unit option [CHAR LIMIT=NONE] -->
     <string name="pref_units_imperial" translatable="false">imperial</string>
+
+
+
+    <!-- Label for location intent -->
+    <string name="action_location_intent">Map Location</string>
 
 </resources>
