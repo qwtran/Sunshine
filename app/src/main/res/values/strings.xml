@@ -41,4 +41,7 @@
     <!-- Label for location intent -->
     <string name="action_location_intent">Map Location</string>
 
+    <!--  Label for share action -->
+    <string name="action_share">Share</string>
+
 </resources>
