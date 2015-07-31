@@ -51,7 +51,7 @@ public class WeatherContract {
         public static final String COLUMN_COORD_LONG = "coord_long";
 
         // City name
-        public static final String COLUMN_CITY__NAME = "city_name";
+        public static final String COLUMN_CITY_NAME = "city_name";
     }
 
     /* Inner class that defines the table contents of the weather table */
