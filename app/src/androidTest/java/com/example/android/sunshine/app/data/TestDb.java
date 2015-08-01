@@ -15,8 +15,10 @@
  */
 package com.example.android.sunshine.app.data;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
 import android.test.AndroidTestCase;
 
 import com.example.android.sunshine.data.WeatherContract;
@@ -113,24 +115,41 @@ public class TestDb extends AndroidTestCase {
         where you can uncomment out the "createNorthPoleLocationValues" function.  You can
         also make use of the ValidateCurrentRecord function from within TestUtilities.
     */
-    public void testLocationTable() {
+    public long testLocationTable() {
         // First step: Get reference to writable database
+        SQLiteDatabase db = new WeatherDbHelper(
+                this.mContext).getWritableDatabase();
+        assertEquals(true, db.isOpen());
 
         // Create ContentValues of what you want to insert
         // (you can use the createNorthPoleLocationValues if you wish)
+        ContentValues value = TestUtilities.createNorthPoleLocationValues();
 
         // Insert ContentValues into database and get a row ID back
+        long id = db.insert(WeatherContract.LocationEntry.TABLE_NAME,
+                null, value);
+
+        // Verify we got a row back
+        assertTrue(id != -1);
 
         // Query the database and receive a Cursor back
+        Cursor cursor = db.query(WeatherContract.LocationEntry.TABLE_NAME,
+                null, null, null, null, null, null, null);
 
         // Move the cursor to a valid database row
+        assertTrue("Error: no records returened from query",cursor.moveToFirst());
 
         // Validate data in resulting Cursor with the original ContentValues
         // (you can use the validateCurrentRecord function in TestUtilities to validate the
         // query if you like)
+        TestUtilities.validateCurrentRecord("Error: location query validation failed",
+                cursor, value);
 
         // Finally, close the cursor and database
+        cursor.close();
+        db.close();
 
+        return id;
     }
 
     /*
